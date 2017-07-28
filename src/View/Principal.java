@@ -28,7 +28,7 @@ public class Principal extends javax.swing.JFrame{
     private static boolean partida = false, chegada = false, debug = false;
     private int[] coordPartida = new int[2];
     private int[] coordChegada = new int[2];
-    private int velocidadeAnimacao = 20;
+    private int niveis = 1;
     
     //Padrão -------------------------------------
     Color green = new Color(0,128,0);
@@ -99,8 +99,9 @@ public class Principal extends javax.swing.JFrame{
         Profundidade = new javax.swing.JRadioButton();
         Largura = new javax.swing.JRadioButton();
         Astar = new javax.swing.JRadioButton();
-        CMaisFacil = new javax.swing.JRadioButton();
         btBuscar = new javax.swing.JButton();
+        CMaisFacil = new javax.swing.JRadioButton();
+        Nivel = new javax.swing.JSpinner();
         label_detalhes = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -186,7 +187,7 @@ public class Principal extends javax.swing.JFrame{
                 .addGroup(PanelAddTerrainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cbTerreno, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bt_debug))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(338, Short.MAX_VALUE))
         );
         PanelAddTerrainLayout.setVerticalGroup(
             PanelAddTerrainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,6 +267,14 @@ public class Principal extends javax.swing.JFrame{
             }
         });
 
+        btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
+            }
+        });
+
+        rgMetodoBusca.add(CMaisFacil);
         CMaisFacil.setText("CMaisFacil");
         CMaisFacil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,10 +282,10 @@ public class Principal extends javax.swing.JFrame{
             }
         });
 
-        btBuscar.setText("Buscar");
-        btBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btBuscarActionPerformed(evt);
+        Nivel.setModel(new javax.swing.SpinnerNumberModel(1, 1, 50, 1));
+        Nivel.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                NivelStateChanged(evt);
             }
         });
 
@@ -287,27 +296,29 @@ public class Principal extends javax.swing.JFrame{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Profundidade)
+                    .addComponent(Largura)
+                    .addComponent(Astar)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Profundidade)
-                            .addComponent(Largura)
-                            .addComponent(Astar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, Short.MAX_VALUE))
-                    .addComponent(CMaisFacil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                        .addComponent(CMaisFacil)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Nivel, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btBuscar)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(Astar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CMaisFacil)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(CMaisFacil, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Nivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Largura)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -332,9 +343,9 @@ public class Principal extends javax.swing.JFrame{
                                 .addComponent(label_detalhes)
                                 .addGap(254, 254, 254))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(0, 0, Short.MAX_VALUE))))))
         );
         layout.setVerticalGroup(
@@ -365,6 +376,7 @@ public class Principal extends javax.swing.JFrame{
         Profundidade.setEnabled(true);
         Largura.setEnabled(true);
         Astar.setEnabled(true);
+        CMaisFacil.setEnabled(true);
         repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -468,8 +480,8 @@ public class Principal extends javax.swing.JFrame{
             if(Profundidade.isSelected()){
                 try {
                     BuscaProfundidade();
-                    btDefinirChegada.setEnabled(false);
-                    btDefinirPartida.setEnabled(false);
+                    //btDefinirChegada.setEnabled(false);
+                    //btDefinirPartida.setEnabled(false);
                     CMaisFacil.setEnabled(false);
                     Largura.setEnabled(false);
                     Astar.setEnabled(false);
@@ -494,7 +506,7 @@ public class Principal extends javax.swing.JFrame{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{
+            }else if(CMaisFacil.isSelected()){
                 try {
                     BuscaCMaisFacil();
                     Profundidade.setEnabled(false);
@@ -527,10 +539,6 @@ public class Principal extends javax.swing.JFrame{
         // TODO add your handling code here:
     }//GEN-LAST:event_cbTerrenoActionPerformed
 
-    private void CMaisFacilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMaisFacilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CMaisFacilActionPerformed
-
     private void ProfundidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfundidadeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ProfundidadeActionPerformed
@@ -554,6 +562,14 @@ public class Principal extends javax.swing.JFrame{
         //map.setSizeX((int)btQntdX.getValue());
         repaint();
     }//GEN-LAST:event_btQntdxStateChanged
+
+    private void CMaisFacilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMaisFacilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CMaisFacilActionPerformed
+
+    private void NivelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_NivelStateChanged
+        
+    }//GEN-LAST:event_NivelStateChanged
 
     
     public LinkedList<Tile> BuscaProfundidade() throws InterruptedException{
@@ -583,7 +599,7 @@ public class Principal extends javax.swing.JFrame{
             for(int i=vizinhos.size()-1; i>=0; i--){
                 vizinho = vizinhos.get(i);
                 paintTileToVisit(vizinho);
-                if((!vizinho.isVisited())&&(vizinho.getCost()<=2)){
+                if(!vizinho.isVisited()){
                     pilha.push(vizinho);
                     vizinho.setPai(visitando);
                     
@@ -738,7 +754,7 @@ public class Principal extends javax.swing.JFrame{
         
         while(visitando != destino){
             visitando = fila.poll();
-            //System.out.println("Visitando: "+ visitando);
+            System.out.println("Visitando: "+ visitando);
             vizinhos = map.getNeighbor(visitando);
             nTilesVisitados++;
             
@@ -746,7 +762,8 @@ public class Principal extends javax.swing.JFrame{
                 continue;
             
             for(Tile vizinho : vizinhos){
-                if(!vizinho.isVisited()){
+                System.out.println((int)Nivel.getValue());
+                if((!vizinho.isVisited())&&(vizinho.getCost()<=(int)Nivel.getValue())){
                     vizinho.setGlobalCost(visitando.getGlobalCost() + vizinho.getCost());
                     fila.offer(vizinho);
                     paintTileToVisit(vizinho);
@@ -792,7 +809,7 @@ public class Principal extends javax.swing.JFrame{
             //System.out.println(tile);
             paintPath(tile);
             repaint();
-            sleep(velocidadeAnimacao);
+            //sleep(velocidadeAnimacao);
         }
         
     }
@@ -887,6 +904,7 @@ public class Principal extends javax.swing.JFrame{
     private javax.swing.JRadioButton Astar;
     private javax.swing.JRadioButton CMaisFacil;
     private javax.swing.JRadioButton Largura;
+    private javax.swing.JSpinner Nivel;
     private javax.swing.JPanel PanelAddTerrain;
     private javax.swing.JRadioButton Profundidade;
     private javax.swing.JButton btBuscar;
