@@ -37,24 +37,28 @@ public class Principal extends javax.swing.JFrame{
     Color brown = new Color(160,82,45);
     Color black = new Color(0,0,0);
     Color white = new Color(255, 255, 255);
+    Color yellow = new Color(255, 255, 0);
     //--------------------------------------------
     //Visitados ----------------------------------
     Color visitedGreen = new Color(0, 100, 0);
     Color visitedRed = new Color(139,0,0);
     Color visitedBlue = new Color(0,0,139);
     Color visitedBrown = new Color(139,69,19);
+    Color visitedYellow = new Color(255, 255, 51);
     //--------------------------------------------
     //Caminho  ----------------------------------
     Color pathGreen = new Color(50,205,50);
     Color pathRed = new Color(250, 128, 114);
     Color pathBlue = new Color(30,144,255);
     Color pathBrown = new Color(205,133,63);
+    Color pathYellow = new Color(255, 255, 102);
     //--------------------------------------------
     //a Visitar ----------------------------------
     Color toVisitGreen = new Color(144,238,144);
     Color toVisitRed = new Color(255,160,122);
     Color toVisitBlue = new Color(32,178,170);
     Color toVisitBrown = new Color(244,164,96);
+    Color tovisitYellow = new Color(255, 255, 153);
     //--------------------------------------------
     
     
@@ -96,7 +100,7 @@ public class Principal extends javax.swing.JFrame{
         Largura = new javax.swing.JRadioButton();
         Astar = new javax.swing.JRadioButton();
         btBuscar = new javax.swing.JButton();
-        heuristicaC = new javax.swing.JRadioButton();
+        CMaisFacil = new javax.swing.JRadioButton();
         label_detalhes = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -126,14 +130,14 @@ public class Principal extends javax.swing.JFrame{
 
         PanelAddTerrain.setBorder(javax.swing.BorderFactory.createTitledBorder("Editar Mapa"));
 
-        cbTerreno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Grama", "Montanha", "Agua", "Lava" }));
+        cbTerreno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Grama", "Montanha", "Agua", "Lava", "Orc" }));
         cbTerreno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbTerrenoActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Terreno:");
+        jLabel1.setText("Obstaculos:");
 
         jButton2.setText("Limpar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -269,10 +273,10 @@ public class Principal extends javax.swing.JFrame{
             }
         });
 
-        heuristicaC.setText("CMaisFacil");
-        heuristicaC.addActionListener(new java.awt.event.ActionListener() {
+        CMaisFacil.setText("CMaisFacil");
+        CMaisFacil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                heuristicaCActionPerformed(evt);
+                CMaisFacilActionPerformed(evt);
             }
         });
 
@@ -289,7 +293,7 @@ public class Principal extends javax.swing.JFrame{
                             .addComponent(Largura)
                             .addComponent(Astar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, Short.MAX_VALUE))
-                    .addComponent(heuristicaC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(CMaisFacil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
@@ -303,7 +307,7 @@ public class Principal extends javax.swing.JFrame{
                         .addContainerGap()
                         .addComponent(Astar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(heuristicaC)
+                        .addComponent(CMaisFacil)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Largura)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -340,9 +344,9 @@ public class Principal extends javax.swing.JFrame{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(142, 142, 142))
+                        .addGap(102, 102, 102))
                     .addComponent(map, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(PanelAddTerrain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -386,6 +390,10 @@ public class Principal extends javax.swing.JFrame{
             case 3:
                     tiles[x][y].setColor(red);
                     tiles[x][y].setCost(8);
+                    break;                    
+            case 4:
+                    tiles[x][y].setColor(yellow);
+                    tiles[x][y].setCost(12);
                     break;
         }
         repaint();
@@ -432,6 +440,10 @@ public class Principal extends javax.swing.JFrame{
                         tiles[x][y].setColor(red);
                         tiles[x][y].setCost(8);
                         break;
+                case 4:
+                        tiles[x][y].setColor(yellow);
+                        tiles[x][y].setCost(12);
+                        break;
             }
         }
         repaint();
@@ -452,6 +464,7 @@ public class Principal extends javax.swing.JFrame{
         
         /*Fazer magica*/
         //new Thread(() -> {
+            
             if(Profundidade.isSelected()){
                 try {
                     BuscaProfundidade();
@@ -470,17 +483,24 @@ public class Principal extends javax.swing.JFrame{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else{
+            }else if(Astar.isSelected()){
                 try {
                     BuscaAstar();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }else if(CMaisFacil.isSelected()){
+                try {
+                    BuscaCMaisFacil();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }   
             }           
        // }).start();
         
     }//GEN-LAST:event_btBuscarActionPerformed
-
+    
+    
     private void bt_debugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_debugActionPerformed
         // TODO add your handling code here:
         debug = !debug;
@@ -499,9 +519,9 @@ public class Principal extends javax.swing.JFrame{
         // TODO add your handling code here:
     }//GEN-LAST:event_cbTerrenoActionPerformed
 
-    private void heuristicaCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heuristicaCActionPerformed
+    private void CMaisFacilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMaisFacilActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_heuristicaCActionPerformed
+    }//GEN-LAST:event_CMaisFacilActionPerformed
 
     private void ProfundidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfundidadeActionPerformed
         // TODO add your handling code here:
@@ -691,6 +711,61 @@ public class Principal extends javax.swing.JFrame{
         return caminho;
     }
     
+    public LinkedList<Tile> BuscaCMaisFacil()throws InterruptedException{
+        long tempoInicial = System.currentTimeMillis();
+        Tile[][] tiles = map.getTiles();
+        PriorityQueue<Tile> fila = new PriorityQueue<>((Tile tile1,Tile tile2) -> tile1.compareTo(tile2));
+        ArrayList<Tile> vizinhos;
+        LinkedList<Tile> caminho = new LinkedList<>();
+        int nTilesVisitados = 0;
+        
+        
+        Tile visitando, destino;
+        visitando = tiles[coordPartida[0]][coordPartida[1]];
+        destino = tiles[coordChegada[0]][coordChegada[1]];
+        
+        fila.offer(visitando);
+        
+        calcularDistanciaHeuristica(destino);
+        
+        while(visitando != destino){
+            visitando = fila.poll();
+            //System.out.println("Visitando: "+ visitando);
+            vizinhos = map.getNeighbor(visitando);
+            nTilesVisitados++;
+            
+            if(visitando.isVisited())
+                continue;
+            
+            for(Tile vizinho : vizinhos){
+                if(!vizinho.isVisited()){
+                    vizinho.setGlobalCost(visitando.getGlobalCost() + vizinho.getCost());
+                    fila.offer(vizinho);
+                    paintTileToVisit(vizinho);
+                    vizinho.setPai(visitando);
+                }
+            }
+            //System.out.println("fila: "+ fila.toString());
+            //System.out.println("------------------------------------------------------------");
+            visitando.setVisited(true);
+            paintTile(visitando);
+            repaint();
+            //sleep(velocidadeAnimacao);
+        }
+        System.out.println("terminei");
+        Tile t = destino;
+        while(t.getPai() != null){
+            caminho.addFirst(t);
+            t = t.getPai();
+        }
+        //System.out.println("Caminho: -------------------------------------");
+        printPath(caminho);
+        
+        long res= System.currentTimeMillis() - tempoInicial;
+        presentResults(res,nTilesVisitados, calculateCost(caminho));
+        return caminho;
+    }
+    
     public void presentResults(long timeCost,int costSearch ,int costPath){
         new Resultado(timeCost,costSearch, costPath).setVisible(true);
         //label_detalhes.setText("detalhes: custo da busca: "+ costSearch + " custo do caminho: "+ costPath);
@@ -726,6 +801,8 @@ public class Principal extends javax.swing.JFrame{
             tile.setColor(toVisitBlue);
         }else if(tile.getColor().equals(brown)){
             tile.setColor(toVisitBrown);
+        }else if(tile.getColor().equals(yellow)){
+            tile.setColor(tovisitYellow);
         }
         //}
     }
@@ -741,6 +818,8 @@ public class Principal extends javax.swing.JFrame{
             tile.setColor(visitedBlue);
         }else if(tile.getColor().equals(toVisitBrown)){
             tile.setColor(visitedBrown);
+        }else if(tile.getColor().equals(tovisitYellow)){
+            tile.setColor(visitedYellow);
         }
         //}
     }
@@ -756,6 +835,8 @@ public class Principal extends javax.swing.JFrame{
                 tile.setColor(pathBlue);
             else if(tile.getColor().equals(visitedBrown))
                 tile.setColor(pathBrown);
+            else if(tile.getColor().equals(visitedYellow))
+                tile.setColor(pathYellow);
         //}
     }
     
@@ -796,6 +877,7 @@ public class Principal extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton Astar;
+    private javax.swing.JRadioButton CMaisFacil;
     private javax.swing.JRadioButton Largura;
     private javax.swing.JPanel PanelAddTerrain;
     private javax.swing.JRadioButton Profundidade;
@@ -805,7 +887,6 @@ public class Principal extends javax.swing.JFrame{
     private javax.swing.JSpinner btQntdx;
     private javax.swing.JToggleButton bt_debug;
     private javax.swing.JComboBox cbTerreno;
-    private javax.swing.JRadioButton heuristicaC;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
