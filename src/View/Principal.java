@@ -99,8 +99,8 @@ public class Principal extends javax.swing.JFrame{
         Profundidade = new javax.swing.JRadioButton();
         Largura = new javax.swing.JRadioButton();
         Astar = new javax.swing.JRadioButton();
-        btBuscar = new javax.swing.JButton();
         CMaisFacil = new javax.swing.JRadioButton();
+        btBuscar = new javax.swing.JButton();
         label_detalhes = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -266,17 +266,17 @@ public class Principal extends javax.swing.JFrame{
             }
         });
 
-        btBuscar.setText("Buscar");
-        btBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btBuscarActionPerformed(evt);
-            }
-        });
-
         CMaisFacil.setText("CMaisFacil");
         CMaisFacil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CMaisFacilActionPerformed(evt);
+            }
+        });
+
+        btBuscar.setText("Buscar");
+        btBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuscarActionPerformed(evt);
             }
         });
 
@@ -346,7 +346,7 @@ public class Principal extends javax.swing.JFrame{
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(102, 102, 102))
+                        .addGap(78, 78, 78))
                     .addComponent(map, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(PanelAddTerrain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -470,6 +470,7 @@ public class Principal extends javax.swing.JFrame{
                     BuscaProfundidade();
                     btDefinirChegada.setEnabled(false);
                     btDefinirPartida.setEnabled(false);
+                    CMaisFacil.setEnabled(false);
                     Largura.setEnabled(false);
                     Astar.setEnabled(false);
                 } catch (InterruptedException ex) {
@@ -478,6 +479,7 @@ public class Principal extends javax.swing.JFrame{
             }else if(Largura.isSelected()){
                 try {
                     BuscaLargura();
+                    CMaisFacil.setEnabled(false);
                     Profundidade.setEnabled(false);
                     Astar.setEnabled(false);
                 } catch (InterruptedException ex) {
@@ -486,12 +488,18 @@ public class Principal extends javax.swing.JFrame{
             }else if(Astar.isSelected()){
                 try {
                     BuscaAstar();
+                    CMaisFacil.setEnabled(false);
+                    Profundidade.setEnabled(false);
+                    Largura.setEnabled(false);                    
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else if(CMaisFacil.isSelected()){
+            }else{
                 try {
                     BuscaCMaisFacil();
+                    Profundidade.setEnabled(false);
+                    Largura.setEnabled(false);                     
+                    Astar.setEnabled(false);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 }   
@@ -575,14 +583,14 @@ public class Principal extends javax.swing.JFrame{
             for(int i=vizinhos.size()-1; i>=0; i--){
                 vizinho = vizinhos.get(i);
                 paintTileToVisit(vizinho);
-                if(!vizinho.isVisited()){
+                if((!vizinho.isVisited())&&(vizinho.getCost()<=2)){
                     pilha.push(vizinho);
                     vizinho.setPai(visitando);
                     
                 }
             }
             repaint();
-            sleep(velocidadeAnimacao);
+            //sleep(velocidadeAnimacao);
         }
         Tile t = destino;
         while(t.getPai() != null){
